@@ -63,3 +63,16 @@ object DBMToPersonMapper: Mapper<UserDBM, PersonDTO> {
         }
     }
 }
+
+object UserToPersonMapper: Mapper<User, PersonDTO> {
+    override fun map(input: User): PersonDTO {
+        input.apply {
+            return PersonDTO(
+                firstName = firstName,
+                lastName = lastName,
+                statusMessage = statusMessage,
+                statusIcon = null
+            )
+        }
+    }
+}
