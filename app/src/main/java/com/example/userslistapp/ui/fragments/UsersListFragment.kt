@@ -8,11 +8,13 @@ import com.example.userslistapp.R
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.ui.adapters.UserLongClickListener
 import com.example.userslistapp.ui.adapters.UsersAdapter
+import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogActionListener
+import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogFragment
 import com.example.userslistapp.viewmodels.UserListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 
-class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener {
+class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener, DeleteDialogActionListener {
     companion object {
         fun newInstance(): UsersListFragment {
             return UsersListFragment().apply {
@@ -76,25 +78,33 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener {
     }
 
     private fun onDeleteIntent(user: User) {
-        //show delete dialog
+        DeleteDialogFragment.newInstance(user).show(requireActivity().supportFragmentManager, "delete_tag")
     }
 
     private fun onLoading() {
-        //show loading
+        showLoading()
     }
 
     private fun onSuccess(users: List<User>) {
-        //dismiss load
+        hideLoading()
         adapter.setUsers(users = users.toTypedArray())
     }
 
     private fun onError(message: String?) {
-        //dismiss loading
-        //show error
+        hideLoading()
+        showError(message)
     }
 
     override fun onUserLongClicked(user: User, position: Int) {
         viewModel.tryToDelete(user)
+    }
+
+    override fun onDelete(user: User) {
+        viewModel.deleteUser(user)
+    }
+
+    override fun onCancel() {
+        //do nothing
     }
 }
 

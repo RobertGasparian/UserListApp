@@ -9,8 +9,9 @@ import com.example.userslistapp.usecases.AddUserUseCase
 import com.example.userslistapp.usecases.DeleteUserUseCase
 import com.example.userslistapp.usecases.GetAllUsersUseCase
 import kotlinx.coroutines.*
+import java.lang.Exception
 
-abstract class UserListViewModel(app: Application): BaseViewModel<UIState>(app) {
+abstract class UserListViewModel(app: Application) : BaseViewModel<UIState>(app) {
     abstract fun getUsers()
     abstract fun addUser(firstName: String, lastName: String, statusMessage: String)
     abstract fun deleteUser(user: User)
@@ -22,59 +23,71 @@ class UserListViewModelImpl(
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val addUserUseCase: AddUserUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-): UserListViewModel(app) {
+) : UserListViewModel(app) {
 
     override fun uiState(): LiveData<UIState> = uiState
 
     override fun getUsers() {
         uiState.value = UIState.Loading
-        val exHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            if (throwable !is CancellationException) {
-                uiState.value = UIState.Error("${throwable.message}")
-            } else {
-                //Cancel case
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO + exHandler) {
-            val users = getAllUsersUseCase.getAllUsers()
-            withContext(Dispatchers.Main) {
-                uiState.value = UIState.Success(users)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val users = getAllUsersUseCase.getAllUsers()
+                withContext(Dispatchers.Main) {
+                    uiState.value = UIState.Success(users)
+                }
+            } catch (ex: Exception) {
+                if (ex !is CancellationException) {
+                    withContext(Dispatchers.Main) {
+                        uiState.value = UIState.Error(ex.message)
+                    }
+                } else {
+                    //Cancel case
+                }
             }
         }
     }
 
     override fun addUser(firstName: String, lastName: String, statusMessage: String) {
-        val exHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            if (throwable !is CancellationException) {
-                uiState.value = UIState.Error("${throwable.message}")
-            } else {
-                //Cancel case
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO + exHandler) {
+        uiState.value = UIState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
             //TODO: need to be optimized
-            addUserUseCase.addUser(firstName, lastName, statusMessage)
-            val users = getAllUsersUseCase.getAllUsers()
-            withContext(Dispatchers.Main) {
-                uiState.value = UIState.Success(users)
+            try {
+                addUserUseCase.addUser(firstName, lastName, statusMessage)
+                val users = getAllUsersUseCase.getAllUsers()
+                withContext(Dispatchers.Main) {
+                    uiState.value = UIState.Success(users)
+                }
+            } catch (ex: Exception) {
+                if (ex !is CancellationException) {
+                    withContext(Dispatchers.Main) {
+                        uiState.value = UIState.Error(ex.message)
+                    }
+                } else {
+                    //Cancel case
+                }
             }
         }
     }
 
     override fun deleteUser(user: User) {
-        val exHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            if (throwable !is CancellationException) {
-                uiState.value = UIState.Error("${throwable.message}")
-            } else {
-                //Cancel case
-            }
-        }
-        viewModelScope.launch(Dispatchers.IO + exHandler) {
+        uiState.value = UIState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
             //TODO: need to be optimized
-            deleteUserUseCase.deleteUser(user)
-            val users = getAllUsersUseCase.getAllUsers()
-            withContext(Dispatchers.Main) {
-                uiState.value = UIState.Success(users)
+            try {
+                deleteUserUseCase.deleteUser(user)
+                val users = getAllUsersUseCase.getAllUsers()
+                withContext(Dispatchers.Main) {
+                    uiState.value = UIState.Success(users)
+                }
+            } catch (ex: Exception) {
+                if (ex !is CancellationException) {
+                    withContext(Dispatchers.Main) {
+                        uiState.value = UIState.Error(ex.message)
+                    }
+                } else {
+                    //Cancel case
+                }
             }
         }
     }

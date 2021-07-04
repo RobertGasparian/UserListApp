@@ -2,6 +2,7 @@ package com.example.userslistapp.usecases
 
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.repositories.UserRepo
+import java.lang.Exception
 
 interface DeleteUserUseCase {
     suspend fun deleteUser(user: User)

@@ -21,7 +21,6 @@ class UserToUserDBMMapperTest {
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
-            statusIcon = null
         )
     }
     // endregion Constants--------------------------------------------------------------------------

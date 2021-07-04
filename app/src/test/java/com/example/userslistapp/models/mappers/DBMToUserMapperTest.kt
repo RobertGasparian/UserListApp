@@ -37,7 +37,6 @@ class DBMToUserMapperTest {
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
-            statusIcon = null
         )
         //Act
         val result = SUT.map(userDbm)

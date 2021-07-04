@@ -12,8 +12,8 @@ interface ApiService {
     suspend fun getUsers(): UsersResponse
 
     @GET("ILsnzqADc0o3NGr/download")
-    suspend fun addUser(firstName: String, lastName: String, statusMessage: String): AddUserResponse
+    suspend fun addUser(): AddUserResponse
 
     @GET("uvbyRgwuSZaZ2IV/download")
-    suspend fun deleteUser(user: PersonDTO): DeleteUserResponse
+    suspend fun deleteUser(): DeleteUserResponse
 }

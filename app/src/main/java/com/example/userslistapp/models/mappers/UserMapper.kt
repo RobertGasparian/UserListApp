@@ -20,7 +20,6 @@ object PersonToUserDBMMapper: Mapper<PersonDTO, UserDBM?> {
                 firstName = firstName,
                 lastName = lastName,
                 statusMessage = statusMessage,
-                statusIcon = input.statusIcon
             )
         }
     }
@@ -43,7 +42,6 @@ object UserToUserDBMMapper: Mapper<User, UserDBM> {
                 firstName = firstName,
                 lastName = lastName,
                 statusMessage = statusMessage,
-                statusIcon = null
             )
         }
     }
@@ -56,7 +54,6 @@ object DBMToPersonMapper: Mapper<UserDBM, PersonDTO> {
                 firstName = firstName,
                 lastName = lastName,
                 statusMessage = statusMessage,
-                statusIcon = statusIcon,
             )
         }
     }

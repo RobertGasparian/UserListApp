@@ -240,7 +240,6 @@ class UserConverterImplTest {
             FIRST_NAME,
             LAST_NAME,
             STATUS_MESSAGE,
-            statusIcon
         )
     }
 

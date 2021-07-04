@@ -4,6 +4,11 @@ import com.example.userslistapp.database.UserDao
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.models.mappers.converters.UserConverter
 import com.example.userslistapp.networking.ApiService
+import kotlinx.coroutines.delay
+import okhttp3.Response
+import retrofit2.HttpException
+import java.io.IOException
+import java.lang.Exception
 
 interface UserRepo {
     suspend fun getAllUsers(): List<User>
@@ -26,18 +31,21 @@ class UserRepoImpl(
                 userConverter.dtoToDbm(it)
             } ?: emptyList()
             userDao.insertAll(*userDBMList.toTypedArray())
-            return userDBMList.map { userConverter.dbmToModel(it) }
+            return userDao.getAllUsers().map { userConverter.dbmToModel(it) }
+        } else {
+            //uncomment for testing loading
+            delay(1000)
         }
         return userDBMList.map { userConverter.dbmToModel(it) }
     }
 
     override suspend fun addUser(firstName: String, lastName: String, statusMessage: String) {
-        apiService.addUser(firstName, lastName, statusMessage)
+        apiService.addUser()
         userDao.insertAll(userConverter.modelToDbm(User(firstName, lastName, statusMessage)))
     }
 
     override suspend fun delete(user: User) {
-        apiService.deleteUser(userConverter.modelToDTO(user))
+        apiService.deleteUser()
         userDao.delete(userConverter.modelToDbm(user))
     }
 

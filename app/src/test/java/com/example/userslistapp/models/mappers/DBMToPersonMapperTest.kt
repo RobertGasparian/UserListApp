@@ -21,7 +21,7 @@ class DBMToPersonMapperTest {
         val CORRECT_PERSON = PersonDTO(
             FIRST_NAME,
             LAST_NAME,
-            STATUS_ICON,
+            null,
             STATUS_MESSAGE,
         )
     }
@@ -40,7 +40,6 @@ class DBMToPersonMapperTest {
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
-            statusIcon = STATUS_ICON
         )
         //Act
         val result = SUT.map(userDbm)

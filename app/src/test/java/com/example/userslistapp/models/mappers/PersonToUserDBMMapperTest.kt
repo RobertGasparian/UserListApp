@@ -18,16 +18,12 @@ class PersonToUserDBMMapperTest {
         const val LAST_NAME = "last name"
         const val STATUS_MESSAGE = "status message"
         const val STATUS_ICON = "status icon"
-        val MINIMAL_CORRECT_USER_DBM = UserDBM(
+        val CORRECT_USER_DBM = UserDBM(
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
-            statusIcon = null)
-        val COMPLETE_USER_DBM = UserDBM(
-            firstName = FIRST_NAME,
-            lastName = LAST_NAME,
-            statusMessage = STATUS_MESSAGE,
-            statusIcon = STATUS_ICON)
+        )
+
     }
     // endregion Constants--------------------------------------------------------------------------
 
@@ -51,7 +47,7 @@ class PersonToUserDBMMapperTest {
         val result = SUT.map(personDto)
         //Assert
         assertNotNull(result)
-        assertEquals(MINIMAL_CORRECT_USER_DBM, result)
+        assertEquals(CORRECT_USER_DBM, result)
     }
 
     @Test
@@ -67,7 +63,7 @@ class PersonToUserDBMMapperTest {
         val result = SUT.map(personDto)
         //Assert
         assertNotNull(result)
-        assertEquals(COMPLETE_USER_DBM, result)
+        assertEquals(CORRECT_USER_DBM, result)
     }
 
     //failure case
