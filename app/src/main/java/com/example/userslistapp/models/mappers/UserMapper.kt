@@ -25,5 +25,15 @@ object PersonToUserDBMMapper: Mapper<PersonDTO, UserDBM?> {
             )
         }
     }
+}
+
+object DBMToUserMapper: Mapper<UserDBM, User> {
+    override fun map(input: UserDBM): User {
+        return User(
+            input.firstName,
+            input.lastName,
+            input.statusMessage
+        )
+    }
 
 }
