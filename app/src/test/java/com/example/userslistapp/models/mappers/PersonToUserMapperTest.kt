@@ -25,7 +25,7 @@ class PersonToUserMapperTest {
 
     // endregion Helper fields----------------------------------------------------------------------
 
-    val SUT: PersonToUserMapper = PersonToUserMapper
+    val SUT: Mapper<PersonDTO, User?> = PersonToUserMapper
 
     //success case
     @Test

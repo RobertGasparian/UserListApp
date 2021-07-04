@@ -37,7 +37,7 @@ class PersonToUserDBMMapperTest {
 
     // endregion Helper fields----------------------------------------------------------------------
 
-    val SUT: PersonToUserDBMMapper = PersonToUserDBMMapper
+    val SUT: Mapper<PersonDTO, UserDBM?> = PersonToUserDBMMapper
 
     //success case
     @Test

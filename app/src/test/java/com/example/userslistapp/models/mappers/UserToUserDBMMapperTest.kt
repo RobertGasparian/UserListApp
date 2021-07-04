@@ -7,19 +7,22 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 import org.junit.Assert.*
 
-class DBMToUserMapperTest {
+class UserToUserDBMMapperTest {
 
     // region Constants-----------------------------------------------------------------------------
     companion object {
         const val FIRST_NAME = "first name"
         const val LAST_NAME = "last name"
         const val STATUS_MESSAGE = "status message"
-        val CORRECT_USER = User(
-            FIRST_NAME,
-            LAST_NAME,
-            STATUS_MESSAGE
+        val CORRECT_USER_DBM = UserDBM(
+            uid = FIRST_NAME + LAST_NAME,
+            firstName = FIRST_NAME,
+            lastName = LAST_NAME,
+            statusMessage = STATUS_MESSAGE,
+            statusIcon = null
         )
     }
     // endregion Constants--------------------------------------------------------------------------
@@ -28,22 +31,20 @@ class DBMToUserMapperTest {
 
     // endregion Helper fields----------------------------------------------------------------------
 
-    val SUT: Mapper<UserDBM, User> = DBMToUserMapper
+    val SUT: Mapper<User, UserDBM> = UserToUserDBMMapper
 
     @Test
-    fun `correct User object returned from UserDMB mapping`() {
+    fun `correct UserDBM object returned from User mapping`() {
         //Arrange
-        val userDbm = UserDBM(
-            uid = FIRST_NAME + LAST_NAME,
+        val user = User(
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
-            statusMessage = STATUS_MESSAGE,
-            statusIcon = null
+            statusMessage = STATUS_MESSAGE
         )
         //Act
-        val result = SUT.map(userDbm)
+        val result = SUT.map(user)
         //Assert
-        assertEquals(CORRECT_USER, result)
+        assertEquals(CORRECT_USER_DBM, result)
     }
 
     // region Helper methods------------------------------------------------------------------------

@@ -35,5 +35,19 @@ object DBMToUserMapper: Mapper<UserDBM, User> {
             input.statusMessage
         )
     }
+}
+
+object UserToUserDBMMapper: Mapper<User, UserDBM> {
+    override fun map(input: User): UserDBM {
+        input.apply {
+            return UserDBM(
+                uid = firstName + lastName,
+                firstName = firstName,
+                lastName = lastName,
+                statusMessage = statusMessage,
+                statusIcon = null
+            )
+        }
+    }
 
 }
