@@ -1,9 +1,7 @@
 package com.example.userslistapp.repositories
 
-import com.example.userslistapp.database.AppDatabase
 import com.example.userslistapp.database.UserDao
 import com.example.userslistapp.models.appmodels.User
-import com.example.userslistapp.models.dbm.UserDBM
 import com.example.userslistapp.models.mappers.converters.UserConverter
 import com.example.userslistapp.networking.ApiService
 

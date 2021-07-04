@@ -14,6 +14,7 @@ abstract class UserListViewModel(app: Application): BaseViewModel<UIState>(app) 
     abstract fun getUsers()
     abstract fun addUser(firstName: String, lastName: String, statusMessage: String)
     abstract fun deleteUser(user: User)
+    abstract fun tryToDelete(user: User)
 }
 
 class UserListViewModelImpl(
@@ -76,5 +77,9 @@ class UserListViewModelImpl(
                 uiState.value = UIState.Success(users)
             }
         }
+    }
+
+    override fun tryToDelete(user: User) {
+        uiState.value = UIState.DeleteDialog(user)
     }
 }
