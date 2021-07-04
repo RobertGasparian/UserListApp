@@ -9,7 +9,7 @@ import com.example.userslistapp.models.dbm.UserDBM
 @Dao
 interface UserDao {
     @Query("SELECT * FROM users")
-    suspend fun getAll(): List<UserDBM>
+    suspend fun getAllUsers(): List<UserDBM>
 
     @Query("SELECT * FROM users WHERE firstName LIKE :firstName AND lastName LIKE :lastName LIMIT 1")
     suspend fun getUserBy(firstName: String, lastName: String): UserDBM

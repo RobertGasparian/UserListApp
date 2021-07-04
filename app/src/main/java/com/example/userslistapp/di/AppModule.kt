@@ -2,6 +2,7 @@ package com.example.userslistapp.di
 
 import androidx.room.Room
 import com.example.userslistapp.database.AppDatabase
+import com.example.userslistapp.database.UserDao
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.models.dbm.UserDBM
 import com.example.userslistapp.models.dto.PersonDTO
@@ -9,6 +10,8 @@ import com.example.userslistapp.models.mappers.*
 import com.example.userslistapp.models.mappers.converters.UserConverter
 import com.example.userslistapp.models.mappers.converters.UserConverterImpl
 import com.example.userslistapp.networking.RetrofitBuilder
+import com.example.userslistapp.repositories.UserRepo
+import com.example.userslistapp.repositories.UserRepoImpl
 import com.example.userslistapp.ui.activities.MainActivity
 import com.example.userslistapp.ui.navigation.MainActivityNavigator
 import com.example.userslistapp.ui.navigation.Navigator
@@ -62,6 +65,10 @@ val appModule = module {
         ).build()
     }
 
+    single {
+        get<AppDatabase>().userDao()
+    }
+
     factory {
         HttpLoggingInterceptor()
     }
@@ -90,5 +97,9 @@ val appModule = module {
 
     viewModel<UserListViewModel> {
         UserListViewModelImpl(androidApplication(), get(), get(), get())
+    }
+
+    factory<UserRepo> {
+        UserRepoImpl(get(), get(), get())
     }
 }
