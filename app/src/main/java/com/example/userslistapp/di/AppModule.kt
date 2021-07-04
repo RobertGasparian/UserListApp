@@ -12,6 +12,7 @@ import com.example.userslistapp.networking.RetrofitBuilder
 import com.example.userslistapp.ui.activities.MainActivity
 import com.example.userslistapp.ui.navigation.MainActivityNavigator
 import com.example.userslistapp.ui.navigation.Navigator
+import com.example.userslistapp.usecases.*
 import com.example.userslistapp.viewmodels.UserListViewModel
 import com.example.userslistapp.viewmodels.UserListViewModelImpl
 import okhttp3.OkHttpClient
@@ -75,7 +76,19 @@ val appModule = module {
         RetrofitBuilder.getRetrofit(get())
     }
 
+    factory<GetAllUsersUseCase> {
+        GetAllUsersUseCaseImpl()
+    }
+
+    factory<AddUserUseCase> {
+        AddUserUseCaseImpl()
+    }
+
+    factory<DeleteUserUseCase> {
+        DeleteUserUseCaseImpl()
+    }
+
     viewModel<UserListViewModel> {
-        UserListViewModelImpl(androidApplication())
+        UserListViewModelImpl(androidApplication(), get(), get(), get())
     }
 }
