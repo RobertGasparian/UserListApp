@@ -5,15 +5,15 @@ import androidx.lifecycle.LiveData
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.ui.fragments.UIState
 
-interface UserListViewModel: UiStateEmitter<UIState> {
-    fun getUsers()
-    fun addUser(firstName: String, lastName: String, statusMessage: String)
-    fun deleteUser(user: User)
+abstract class UserListViewModel(app: Application): BaseViewModel<UIState>(app) {
+    abstract fun getUsers()
+    abstract fun addUser(firstName: String, lastName: String, statusMessage: String)
+    abstract fun deleteUser(user: User)
 }
 
 class UserListViewModelImpl(
     app: Application
-): BaseViewModel<UIState>(app), UserListViewModel {
+): UserListViewModel(app) {
 
     override fun uiState(): LiveData<UIState> = uiState
 

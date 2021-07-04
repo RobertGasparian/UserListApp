@@ -12,9 +12,12 @@ import com.example.userslistapp.networking.RetrofitBuilder
 import com.example.userslistapp.ui.activities.MainActivity
 import com.example.userslistapp.ui.navigation.MainActivityNavigator
 import com.example.userslistapp.ui.navigation.Navigator
+import com.example.userslistapp.viewmodels.UserListViewModel
+import com.example.userslistapp.viewmodels.UserListViewModelImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -70,5 +73,9 @@ val appModule = module {
 
     single {
         RetrofitBuilder.getRetrofit(get())
+    }
+
+    viewModel<UserListViewModel> {
+        UserListViewModelImpl(androidApplication())
     }
 }
