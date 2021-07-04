@@ -1,7 +1,8 @@
-package com.example.userslistapp
+package com.example.userslistapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.userslistapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
