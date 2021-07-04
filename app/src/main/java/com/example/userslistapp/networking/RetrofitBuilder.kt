@@ -8,15 +8,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitBuilder {
     private const val BASE_URL = "https://file.wowapp.me/owncloud/index.php/s/"
 
-    private fun getOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor())
-            .build()
-    }
-
-    private fun getRetrofit(): Retrofit {
+    fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .client(getOkHttpClient())
+            .client(okHttpClient)
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
