@@ -61,6 +61,11 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener {
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.getUsers()
+    }
+
     override fun render(uiState: UIState) {
         when (uiState) {
             is UIState.Error -> onError(uiState.message)

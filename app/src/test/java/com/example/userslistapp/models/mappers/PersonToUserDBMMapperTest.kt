@@ -19,13 +19,11 @@ class PersonToUserDBMMapperTest {
         const val STATUS_MESSAGE = "status message"
         const val STATUS_ICON = "status icon"
         val MINIMAL_CORRECT_USER_DBM = UserDBM(
-            uid = FIRST_NAME + LAST_NAME,
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
             statusIcon = null)
         val COMPLETE_USER_DBM = UserDBM(
-            uid = FIRST_NAME + LAST_NAME,
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,

@@ -40,7 +40,7 @@ class UsersAdapter: RecyclerView.Adapter<UserViewHolder>() {
     }
 }
 
-class UserViewHolder(val itemView: View): RecyclerView.ViewHolder(itemView) {
+class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val displayNameTv: TextView = itemView.findViewById(R.id.displayNameTv)
     val statusMessageTv: TextView = itemView.findViewById(R.id.statusMessageTv)
 

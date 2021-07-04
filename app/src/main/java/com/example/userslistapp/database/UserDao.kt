@@ -1,9 +1,6 @@
 package com.example.userslistapp.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.userslistapp.models.dbm.UserDBM
 
 @Dao
@@ -14,7 +11,7 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE firstName LIKE :firstName AND lastName LIKE :lastName LIMIT 1")
     suspend fun getUserBy(firstName: String, lastName: String): UserDBM
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg userDBM: UserDBM)
 
     @Delete

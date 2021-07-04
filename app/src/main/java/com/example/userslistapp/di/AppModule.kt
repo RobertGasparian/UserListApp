@@ -28,32 +28,39 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val appModule = module(override = true) {
-    single<Mapper<User, UserDBM>> {
+    single<Mapper<User, UserDBM>>(named(MODEL_TO_DBM)) {
         UserToUserDBMMapper
     }
 
-    single<Mapper<PersonDTO, UserDBM?>> {
+    single<Mapper<PersonDTO, UserDBM?>>(named(DTO_TO_DBM)) {
         PersonToUserDBMMapper
     }
 
-    single<Mapper<UserDBM, PersonDTO>> {
+    single<Mapper<UserDBM, PersonDTO>>(named(DBM_TO_DTO)) {
         DBMToPersonMapper
     }
 
-    single<Mapper<UserDBM, User>> {
+    single<Mapper<UserDBM, User>>(named(DBM_TO_MODEL)) {
         DBMToUserMapper
     }
 
-    single<Mapper<PersonDTO, User?>> {
+    single<Mapper<PersonDTO, User?>>(named(DTO_TO_MODEL)) {
         PersonToUserMapper
     }
 
-    single<Mapper<User, PersonDTO>> {
+    single<Mapper<User, PersonDTO>>(named(MODEL_TO_DTO)) {
         UserToPersonMapper
     }
 
     single<UserConverter> {
-        UserConverterImpl(get(), get(), get(), get(), get(), get())
+        UserConverterImpl(
+            get(named(DTO_TO_MODEL)),
+            get(named(DTO_TO_DBM)),
+            get(named(MODEL_TO_DBM)),
+            get(named(MODEL_TO_DTO)),
+            get(named(DBM_TO_MODEL)),
+            get(named(DBM_TO_DTO))
+        )
     }
 
     factory<Navigator>(named(MainActivity::class.simpleName!!)) { params ->
@@ -109,3 +116,10 @@ val appModule = module(override = true) {
         UserRepoImpl(get(), get(), get())
     }
 }
+
+const val DTO_TO_MODEL = "dto_to_model"
+const val DTO_TO_DBM = "dto_to_dbm"
+const val DBM_TO_MODEL = "dbm_to_model"
+const val DBM_TO_DTO = "dbm_to_dto"
+const val MODEL_TO_DTO = "model_to_dto"
+const val MODEL_TO_DBM = "model_to_dbm"

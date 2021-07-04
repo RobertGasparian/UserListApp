@@ -18,7 +18,6 @@ class UserToUserDBMMapperTest {
         const val LAST_NAME = "last name"
         const val STATUS_MESSAGE = "status message"
         val CORRECT_USER_DBM = UserDBM(
-            uid = FIRST_NAME + LAST_NAME,
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,

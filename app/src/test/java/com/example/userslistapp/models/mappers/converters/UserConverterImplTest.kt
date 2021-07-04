@@ -237,7 +237,6 @@ class UserConverterImplTest {
 
     fun getDbm(statusIcon: String? = STATUS_ICON): UserDBM {
         return UserDBM(
-            FIRST_NAME + LAST_NAME,
             FIRST_NAME,
             LAST_NAME,
             STATUS_MESSAGE,

@@ -17,7 +17,6 @@ object PersonToUserDBMMapper: Mapper<PersonDTO, UserDBM?> {
     override fun map(input: PersonDTO): UserDBM? {
         return safeLet(input.firstName, input.lastName, input.statusMessage) { firstName, lastName, statusMessage ->
             UserDBM(
-                uid = firstName + lastName,
                 firstName = firstName,
                 lastName = lastName,
                 statusMessage = statusMessage,
@@ -41,7 +40,6 @@ object UserToUserDBMMapper: Mapper<User, UserDBM> {
     override fun map(input: User): UserDBM {
         input.apply {
             return UserDBM(
-                uid = firstName + lastName,
                 firstName = firstName,
                 lastName = lastName,
                 statusMessage = statusMessage,

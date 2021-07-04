@@ -37,7 +37,6 @@ class DBMToPersonMapperTest {
     fun `correct PersonDTO object returned after UserDBM mapping`() {
         //Arrange
         val userDbm = UserDBM(
-            uid = FIRST_NAME + LAST_NAME,
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
