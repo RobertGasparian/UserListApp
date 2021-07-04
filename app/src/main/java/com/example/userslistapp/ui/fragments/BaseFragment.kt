@@ -8,7 +8,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment<UIState>: Fragment() {
     @get:LayoutRes
     abstract val layoutId: Int
 
@@ -39,4 +39,6 @@ abstract class BaseFragment: Fragment() {
     protected open fun setupClicks() {
 
     }
+
+    abstract fun render(uiState: UIState)
 }
