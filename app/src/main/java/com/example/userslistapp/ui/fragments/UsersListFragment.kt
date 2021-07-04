@@ -1,6 +1,5 @@
 package com.example.userslistapp.ui.fragments
 
-import android.icu.lang.UCharacter
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager

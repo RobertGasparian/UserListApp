@@ -3,6 +3,7 @@ package com.example.userslistapp.ui.activities
 import android.os.Bundle
 import com.example.userslistapp.R
 import com.example.userslistapp.ui.fragments.UsersListFragment
+import com.example.userslistapp.ui.navigation.MainActivityNavigator
 import com.example.userslistapp.ui.navigation.Navigator
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -13,7 +14,9 @@ class MainActivity : BaseActivity() {
         get() = R.layout.activity_main
     override val rootId: Int
         get() = R.id.root_layout
-    override val navigator: Navigator by inject(named(this::class.simpleName!!)) { parametersOf(this, rootId) }
+    //TODO: need to figure out how to pass fragmentManager
+//    override val navigator: Navigator by inject(named(this::class.simpleName!!)) { parametersOf(this.supportFragmentManager, rootId) }
+    override val navigator: Navigator = MainActivityNavigator(supportFragmentManager, rootId)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

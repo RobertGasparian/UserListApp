@@ -9,6 +9,7 @@ import com.example.userslistapp.models.dto.PersonDTO
 import com.example.userslistapp.models.mappers.*
 import com.example.userslistapp.models.mappers.converters.UserConverter
 import com.example.userslistapp.models.mappers.converters.UserConverterImpl
+import com.example.userslistapp.networking.ApiService
 import com.example.userslistapp.networking.RetrofitBuilder
 import com.example.userslistapp.repositories.UserRepo
 import com.example.userslistapp.repositories.UserRepoImpl
@@ -24,8 +25,9 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import retrofit2.Retrofit
 
-val appModule = module {
+val appModule = module(override = true) {
     single<Mapper<User, UserDBM>> {
         UserToUserDBMMapper
     }
@@ -81,6 +83,10 @@ val appModule = module {
 
     single {
         RetrofitBuilder.getRetrofit(get())
+    }
+
+    single<ApiService> {
+        get<Retrofit>().create(ApiService::class.java)
     }
 
     factory<GetAllUsersUseCase> {
