@@ -1,6 +1,7 @@
 package com.example.userslistapp.models.mappers
 
 import com.example.userslistapp.models.appmodels.User
+import com.example.userslistapp.models.dbm.UserDBM
 import com.example.userslistapp.models.dto.PersonDTO
 import org.junit.Assert
 import org.junit.Before
@@ -9,15 +10,26 @@ import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 
-
-class PersonToUserMapperTest {
+class PersonToUserDBMMapperTest {
 
     // region Constants-----------------------------------------------------------------------------
     companion object {
         const val FIRST_NAME = "first name"
         const val LAST_NAME = "last name"
         const val STATUS_MESSAGE = "status message"
-        val CORRECT_USER = User(FIRST_NAME, LAST_NAME, STATUS_MESSAGE)
+        const val STATUS_ICON = "status icon"
+        val MINIMAL_CORRECT_USER_DBM = UserDBM(
+            uid = FIRST_NAME + LAST_NAME,
+            firstName = FIRST_NAME,
+            lastName = LAST_NAME,
+            statusMessage = STATUS_MESSAGE,
+            statusIcon = null)
+        val COMPLETE_USER_DBM = UserDBM(
+            uid = FIRST_NAME + LAST_NAME,
+            firstName = FIRST_NAME,
+            lastName = LAST_NAME,
+            statusMessage = STATUS_MESSAGE,
+            statusIcon = STATUS_ICON)
     }
     // endregion Constants--------------------------------------------------------------------------
 
@@ -25,22 +37,39 @@ class PersonToUserMapperTest {
 
     // endregion Helper fields----------------------------------------------------------------------
 
-    val SUT: PersonToUserMapper = PersonToUserMapper
+    val SUT: PersonToUserDBMMapper = PersonToUserDBMMapper
 
     //success case
     @Test
-    fun `when PersonDTO has all necessary data returns correct User object`()  {
+    fun `when PersonDTO has all necessary data returns correct UserDBM object`() {
         //Arrange
-        val personDTO = PersonDTO(
+        val personDto = PersonDTO(
             firstName = FIRST_NAME,
             lastName = LAST_NAME,
             statusMessage = STATUS_MESSAGE,
+            statusIcon = null,
         )
         //Act
-        val result = SUT.map(personDTO)
+        val result = SUT.map(personDto)
         //Assert
         assertNotNull(result)
-        assertEquals(CORRECT_USER, result)
+        assertEquals(MINIMAL_CORRECT_USER_DBM, result)
+    }
+
+    @Test
+    fun `when PersonDTO has all data returns correct UserDBM object with all additional fields`() {
+        //Arrange
+        val personDto = PersonDTO(
+            firstName = FIRST_NAME,
+            lastName = LAST_NAME,
+            statusMessage = STATUS_MESSAGE,
+            statusIcon = STATUS_ICON,
+        )
+        //Act
+        val result = SUT.map(personDto)
+        //Assert
+        assertNotNull(result)
+        assertEquals(COMPLETE_USER_DBM, result)
     }
 
     //failure case
@@ -48,16 +77,16 @@ class PersonToUserMapperTest {
     fun `when PersonDTO has incomplete data returns null`() {
         //Arrange
         val person1 = PersonDTO(
-            firstName = FIRST_NAME,
-            lastName = LAST_NAME,
+            firstName = PersonToUserMapperTest.FIRST_NAME,
+            lastName = PersonToUserMapperTest.LAST_NAME,
         )
         val person2 = PersonDTO(
-            firstName = FIRST_NAME,
-            statusMessage = STATUS_MESSAGE,
+            firstName = PersonToUserMapperTest.FIRST_NAME,
+            statusMessage = PersonToUserMapperTest.STATUS_MESSAGE,
         )
         val person3 = PersonDTO(
-            statusMessage = STATUS_MESSAGE,
-            lastName = LAST_NAME,
+            statusMessage = PersonToUserMapperTest.STATUS_MESSAGE,
+            lastName = PersonToUserMapperTest.LAST_NAME,
         )
         val person4 = PersonDTO()
         //Act
@@ -71,7 +100,6 @@ class PersonToUserMapperTest {
         assertNull(result3)
         assertNull(result4)
     }
-
 
     // region Helper methods------------------------------------------------------------------------
 

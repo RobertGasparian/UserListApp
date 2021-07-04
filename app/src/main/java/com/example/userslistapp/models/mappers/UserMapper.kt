@@ -2,6 +2,7 @@ package com.example.userslistapp.models.mappers
 
 import com.example.userslistapp.misc.safeLet
 import com.example.userslistapp.models.appmodels.User
+import com.example.userslistapp.models.dbm.UserDBM
 import com.example.userslistapp.models.dto.PersonDTO
 
 object PersonToUserMapper: Mapper<PersonDTO, User?> {
@@ -10,4 +11,19 @@ object PersonToUserMapper: Mapper<PersonDTO, User?> {
             User(firstName, lastName, statusMessage)
         }
     }
+}
+
+object PersonToUserDBMMapper: Mapper<PersonDTO, UserDBM?> {
+    override fun map(input: PersonDTO): UserDBM? {
+        return safeLet(input.firstName, input.lastName, input.statusMessage) { firstName, lastName, statusMessage ->
+            UserDBM(
+                uid = firstName + lastName,
+                firstName = firstName,
+                lastName = lastName,
+                statusMessage = statusMessage,
+                statusIcon = input.statusIcon
+            )
+        }
+    }
+
 }
