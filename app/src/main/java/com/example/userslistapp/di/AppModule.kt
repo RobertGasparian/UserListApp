@@ -84,15 +84,15 @@ val appModule = module {
     }
 
     factory<GetAllUsersUseCase> {
-        GetAllUsersUseCaseImpl()
+        GetAllUsersUseCaseImpl(get())
     }
 
     factory<AddUserUseCase> {
-        AddUserUseCaseImpl()
+        AddUserUseCaseImpl(get())
     }
 
     factory<DeleteUserUseCase> {
-        DeleteUserUseCaseImpl()
+        DeleteUserUseCaseImpl(get())
     }
 
     viewModel<UserListViewModel> {

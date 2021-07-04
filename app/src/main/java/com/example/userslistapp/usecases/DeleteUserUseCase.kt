@@ -1,14 +1,14 @@
 package com.example.userslistapp.usecases
 
 import com.example.userslistapp.models.appmodels.User
+import com.example.userslistapp.repositories.UserRepo
 
 interface DeleteUserUseCase {
     suspend fun deleteUser(user: User)
 }
 
-class DeleteUserUseCaseImpl: DeleteUserUseCase {
+class DeleteUserUseCaseImpl(userRepo: UserRepo): UsersUseCase(userRepo), DeleteUserUseCase {
     override suspend fun deleteUser(user: User) {
-        TODO("Not yet implemented")
+        userRepo.delete(user)
     }
-
 }

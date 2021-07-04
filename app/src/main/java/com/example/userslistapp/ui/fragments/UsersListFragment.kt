@@ -46,13 +46,13 @@ class UsersListFragment : BaseFragment<UIState>() {
 
     }
 
-    private fun onError(message: String) {
+    private fun onError(message: String?) {
 
     }
 }
 
 sealed class UIState {
     object Loading : UIState()
-    class Error(val message: String) : UIState()
+    class Error(val message: String?) : UIState()
     class Success(val users: List<User>): UIState()
 }
