@@ -29,8 +29,4 @@ class MainActivityNavigator(
             fragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         } ?: run { fragmentManager.popBackStack() }
     }
-
-    override fun home() {
-        //TODO clear backStack
-    }
 }
