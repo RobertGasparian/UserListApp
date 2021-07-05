@@ -5,4 +5,9 @@
     <string name="something_went_wrong">Something went wrong!</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="status_message">Status Message</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="add_user">Add User</string>
+    <string name="add_new_user">Add New User</string>
 </resources>

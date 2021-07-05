@@ -2,7 +2,8 @@ package com.example.userslistapp.di
 
 import androidx.room.Room
 import com.example.userslistapp.database.AppDatabase
-import com.example.userslistapp.database.UserDao
+import com.example.userslistapp.misc.UserCreationValidator
+import com.example.userslistapp.misc.UserCreationValidatorImpl
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.models.dbm.UserDBM
 import com.example.userslistapp.models.dto.PersonDTO
@@ -114,6 +115,10 @@ val appModule = module(override = true) {
 
     factory<UserRepo> {
         UserRepoImpl(get(), get(), get())
+    }
+
+    single<UserCreationValidator> {
+        UserCreationValidatorImpl
     }
 }
 

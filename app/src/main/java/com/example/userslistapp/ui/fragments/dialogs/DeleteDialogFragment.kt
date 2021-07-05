@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.userslistapp.R
 import com.example.userslistapp.models.appmodels.User
-import kotlinx.coroutines.NonCancellable.cancel
 
 class DeleteDialogFragment: DialogFragment() {
 
@@ -65,12 +64,12 @@ class DeleteDialogFragment: DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         val user = arguments?.getSerializable(USER_KEY) as? User
-        if (needToDelete && user != null) actionListener?.onDelete(user) else actionListener?.onCancel()
+        if (needToDelete && user != null) actionListener?.onDelete(user) else actionListener?.onDeleteCancel()
         super.onDismiss(dialog)
     }
 }
 
 interface DeleteDialogActionListener {
     fun onDelete(user: User)
-    fun onCancel()
+    fun onDeleteCancel()
 }

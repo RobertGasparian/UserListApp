@@ -8,13 +8,17 @@ import com.example.userslistapp.R
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.ui.adapters.UserLongClickListener
 import com.example.userslistapp.ui.adapters.UsersAdapter
+import com.example.userslistapp.ui.fragments.dialogs.AddUserDialogActionListener
+import com.example.userslistapp.ui.fragments.dialogs.AddUserDialogFragment
 import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogActionListener
 import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogFragment
 import com.example.userslistapp.viewmodels.UserListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 
-class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener, DeleteDialogActionListener {
+class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
+    DeleteDialogActionListener,
+    AddUserDialogActionListener {
     companion object {
         fun newInstance(): UsersListFragment {
             return UsersListFragment().apply {
@@ -50,7 +54,8 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener, Delete
 
     override fun setupClicks() {
         addFab.setOnClickListener {
-            //show add dialog
+            AddUserDialogFragment.newInstance()
+                .show(requireActivity().supportFragmentManager, "add_tag")
         }
         adapter.userLongClickListener = this
     }
@@ -78,7 +83,8 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener, Delete
     }
 
     private fun onDeleteIntent(user: User) {
-        DeleteDialogFragment.newInstance(user).show(requireActivity().supportFragmentManager, "delete_tag")
+        DeleteDialogFragment.newInstance(user)
+            .show(requireActivity().supportFragmentManager, "delete_tag")
     }
 
     private fun onLoading() {
@@ -103,7 +109,15 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener, Delete
         viewModel.deleteUser(user)
     }
 
-    override fun onCancel() {
+    override fun onDeleteCancel() {
+        //do nothing
+    }
+
+    override fun onAdd(user: User) {
+        viewModel.addUser(user.firstName, user.lastName, user.statusMessage)
+    }
+
+    override fun onAddCancel() {
         //do nothing
     }
 }
@@ -111,6 +125,6 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener, Delete
 sealed class UIState {
     object Loading : UIState()
     class Error(val message: String?) : UIState()
-    class Success(val users: List<User>): UIState()
-    class DeleteDialog(val user: User): UIState()
+    class Success(val users: List<User>) : UIState()
+    class DeleteDialog(val user: User) : UIState()
 }
