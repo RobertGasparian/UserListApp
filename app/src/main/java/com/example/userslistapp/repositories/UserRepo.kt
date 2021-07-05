@@ -32,10 +32,11 @@ class UserRepoImpl(
             } ?: emptyList()
             userDao.insertAll(*userDBMList.toTypedArray())
             return userDao.getAllUsers().map { userConverter.dbmToModel(it) }
-        } else {
-            //uncomment for testing loading
-            delay(1000)
         }
+//        else {
+//            //uncomment for testing loading
+//            delay(1000)
+//        }
         return userDBMList.map { userConverter.dbmToModel(it) }
     }
 
