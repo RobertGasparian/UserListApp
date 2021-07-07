@@ -6,8 +6,8 @@ interface UserCreationValidator {
     fun validate(user: User): ValidationStatus
 
     sealed class ValidationStatus {
-        class Valid(val user: User) : ValidationStatus()
-        class Invalid(
+        data class Valid(val user: User) : ValidationStatus()
+        data class Invalid(
             val isFirstNameValid: Boolean,
             val isLastNameValid: Boolean,
             val isStatusMessageValid: Boolean,
