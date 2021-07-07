@@ -2,6 +2,7 @@ package com.example.userslistapp.models.mappers
 
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.models.dbm.UserDBM
+import com.example.userslistapp.utils.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -12,16 +13,7 @@ import org.junit.Assert.*
 class DBMToUserMapperTest {
 
     // region Constants-----------------------------------------------------------------------------
-    companion object {
-        const val FIRST_NAME = "first name"
-        const val LAST_NAME = "last name"
-        const val STATUS_MESSAGE = "status message"
-        val CORRECT_USER = User(
-            FIRST_NAME,
-            LAST_NAME,
-            STATUS_MESSAGE
-        )
-    }
+
     // endregion Constants--------------------------------------------------------------------------
 
     // region Helper fields-------------------------------------------------------------------------
@@ -33,11 +25,7 @@ class DBMToUserMapperTest {
     @Test
     fun `correct User object returned from UserDMB mapping`() {
         //Arrange
-        val userDbm = UserDBM(
-            firstName = FIRST_NAME,
-            lastName = LAST_NAME,
-            statusMessage = STATUS_MESSAGE,
-        )
+        val userDbm = CORRECT_USER_DBM
         //Act
         val result = SUT.map(userDbm)
         //Assert

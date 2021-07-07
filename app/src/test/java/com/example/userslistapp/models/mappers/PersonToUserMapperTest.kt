@@ -2,6 +2,7 @@ package com.example.userslistapp.models.mappers
 
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.models.dto.PersonDTO
+import com.example.userslistapp.utils.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -13,12 +14,7 @@ import org.junit.Assert.*
 class PersonToUserMapperTest {
 
     // region Constants-----------------------------------------------------------------------------
-    companion object {
-        const val FIRST_NAME = "first name"
-        const val LAST_NAME = "last name"
-        const val STATUS_MESSAGE = "status message"
-        val CORRECT_USER = User(FIRST_NAME, LAST_NAME, STATUS_MESSAGE)
-    }
+
     // endregion Constants--------------------------------------------------------------------------
 
     // region Helper fields-------------------------------------------------------------------------
@@ -31,11 +27,7 @@ class PersonToUserMapperTest {
     @Test
     fun `when PersonDTO has all necessary data returns correct User object`()  {
         //Arrange
-        val personDTO = PersonDTO(
-            firstName = FIRST_NAME,
-            lastName = LAST_NAME,
-            statusMessage = STATUS_MESSAGE,
-        )
+        val personDTO = PERSON_NO_ICON
         //Act
         val result = SUT.map(personDTO)
         //Assert

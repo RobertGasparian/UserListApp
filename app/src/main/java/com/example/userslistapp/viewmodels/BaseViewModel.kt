@@ -1,11 +1,11 @@
 package com.example.userslistapp.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-abstract class BaseViewModel<UIState>(app: Application): AndroidViewModel(app), UiStateEmitter<UIState> {
+abstract class BaseViewModel<UIState>: ViewModel(), UiStateEmitter<UIState> {
 
     protected val uiState: MutableLiveData<UIState> = MutableLiveData()
 }

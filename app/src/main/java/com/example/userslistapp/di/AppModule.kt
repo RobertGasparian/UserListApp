@@ -110,7 +110,7 @@ val appModule = module(override = true) {
     }
 
     viewModel<UserListViewModel> {
-        UserListViewModelImpl(androidApplication(), get(), get(), get())
+        UserListViewModelImpl(get(), get(), get())
     }
 
     factory<UserRepo> {

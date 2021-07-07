@@ -54,8 +54,7 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
 
     override fun setupClicks() {
         addFab.setOnClickListener {
-            AddUserDialogFragment.newInstance()
-                .show(requireActivity().supportFragmentManager, "add_tag")
+            viewModel.tryToAdd()
         }
         adapter.userLongClickListener = this
     }
@@ -79,12 +78,18 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
             UIState.Loading -> onLoading()
             is UIState.Success -> onSuccess(uiState.users)
             is UIState.DeleteDialog -> onDeleteIntent(uiState.user)
+            UIState.AddUserDialog -> onAddUserIntent()
         }
     }
 
     private fun onDeleteIntent(user: User) {
         DeleteDialogFragment.newInstance(user)
             .show(requireActivity().supportFragmentManager, "delete_tag")
+    }
+
+    private fun onAddUserIntent() {
+        AddUserDialogFragment.newInstance()
+            .show(requireActivity().supportFragmentManager, "add_tag")
     }
 
     private fun onLoading() {
@@ -110,7 +115,7 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
     }
 
     override fun onDeleteCancel() {
-        //do nothing
+        viewModel.cancelDeleteAction()
     }
 
     override fun onAdd(user: User) {
@@ -118,13 +123,14 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
     }
 
     override fun onAddCancel() {
-        //do nothing
+        viewModel.cancelAddAction()
     }
 }
 
 sealed class UIState {
     object Loading : UIState()
-    class Error(val message: String?) : UIState()
-    class Success(val users: List<User>) : UIState()
-    class DeleteDialog(val user: User) : UIState()
+    data class Error(val message: String?) : UIState()
+    data class Success(val users: List<User>) : UIState()
+    data class DeleteDialog(val user: User) : UIState()
+    object AddUserDialog : UIState()
 }

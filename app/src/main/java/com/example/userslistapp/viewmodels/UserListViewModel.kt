@@ -11,26 +11,29 @@ import com.example.userslistapp.usecases.GetAllUsersUseCase
 import kotlinx.coroutines.*
 import java.lang.Exception
 
-abstract class UserListViewModel(app: Application) : BaseViewModel<UIState>(app) {
+abstract class UserListViewModel : BaseViewModel<UIState>() {
     abstract fun getUsers()
+    abstract fun tryToAdd()
     abstract fun addUser(firstName: String, lastName: String, statusMessage: String)
-    abstract fun deleteUser(user: User)
+    abstract fun cancelAddAction()
     abstract fun tryToDelete(user: User)
+    abstract fun cancelDeleteAction()
+    abstract fun deleteUser(user: User)
 }
 
 class UserListViewModelImpl(
-    app: Application,
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val addUserUseCase: AddUserUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-) : UserListViewModel(app) {
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : UserListViewModel() {
 
     override fun uiState(): LiveData<UIState> = uiState
 
     override fun getUsers() {
         uiState.value = UIState.Loading
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             try {
                 val users = getAllUsersUseCase.getAllUsers()
                 withContext(Dispatchers.Main) {
@@ -48,9 +51,13 @@ class UserListViewModelImpl(
         }
     }
 
+    override fun tryToAdd() {
+        uiState.value = UIState.AddUserDialog
+    }
+
     override fun addUser(firstName: String, lastName: String, statusMessage: String) {
         uiState.value = UIState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             //TODO: need to be optimized
             try {
                 addUserUseCase.addUser(firstName, lastName, statusMessage)
@@ -64,15 +71,19 @@ class UserListViewModelImpl(
                         uiState.value = UIState.Error(ex.message)
                     }
                 } else {
-                    //Cancel case
+                    //TODO: need to handle cancel case
                 }
             }
         }
     }
 
+    override fun cancelAddAction() {
+        // do nothing
+    }
+
     override fun deleteUser(user: User) {
         uiState.value = UIState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             //TODO: need to be optimized
             try {
                 deleteUserUseCase.deleteUser(user)
@@ -86,10 +97,14 @@ class UserListViewModelImpl(
                         uiState.value = UIState.Error(ex.message)
                     }
                 } else {
-                    //Cancel case
+                    //TODO: need to handle cancel case
                 }
             }
         }
+    }
+
+    override fun cancelDeleteAction() {
+        // do nothing
     }
 
     override fun tryToDelete(user: User) {
