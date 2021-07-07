@@ -3,8 +3,8 @@ package com.example.userslistapp.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.userslistapp.R
+import com.example.userslistapp.databinding.FragmentUsersListBinding
 import com.example.userslistapp.models.appmodels.User
 import com.example.userslistapp.ui.adapters.UserLongClickListener
 import com.example.userslistapp.ui.adapters.UsersAdapter
@@ -13,10 +13,9 @@ import com.example.userslistapp.ui.fragments.dialogs.AddUserDialogFragment
 import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogActionListener
 import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogFragment
 import com.example.userslistapp.viewmodels.UserListViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.koin.android.ext.android.inject
 
-class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
+class UsersListFragment : BaseFragment<UIState, FragmentUsersListBinding>(), UserLongClickListener,
     DeleteDialogActionListener,
     AddUserDialogActionListener {
     companion object {
@@ -36,24 +35,17 @@ class UsersListFragment : BaseFragment<UIState>(), UserLongClickListener,
 
     private val adapter = UsersAdapter()
 
-    //TODO change to binding (synthetics are deprecated ((( )
-    private lateinit var usersRv: RecyclerView
-    private lateinit var addFab: FloatingActionButton
-
     override fun setupViews(view: View) {
-        super.setupViews(view)
-        usersRv = view.findViewById(R.id.usersRv)
-        addFab = view.findViewById(R.id.addFab)
         setupRv()
     }
 
     private fun setupRv() {
-        usersRv.layoutManager = LinearLayoutManager(requireContext())
-        usersRv.adapter = adapter
+        binding.usersRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.usersRv.adapter = adapter
     }
 
     override fun setupClicks() {
-        addFab.setOnClickListener {
+        binding.addFab.setOnClickListener {
             viewModel.tryToAdd()
         }
         adapter.userLongClickListener = this

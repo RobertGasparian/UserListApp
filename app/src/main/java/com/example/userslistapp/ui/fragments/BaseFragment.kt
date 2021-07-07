@@ -9,13 +9,14 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialog
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.example.userslistapp.R
+import com.example.userslistapp.misc.viewLifecycle
 import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseFragment<UIState> : Fragment() {
-    @get:LayoutRes
-    abstract val layoutId: Int
+abstract class BaseFragment<UIState, VB: ViewBinding> : Fragment() {
 
     private val simpleLoadingDialog: Dialog by lazy {
         AppCompatDialog(requireContext(), R.style.UsersListAppTheme_Dialog).apply {
@@ -25,12 +26,19 @@ abstract class BaseFragment<UIState> : Fragment() {
         }
     }
 
+    @get:LayoutRes
+    abstract val layoutId: Int
+
+    private var _binding: VB by viewLifecycle()
+    val binding get() = _binding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        return _binding.root
     }
 
     @CallSuper

@@ -6,15 +6,15 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.userslistapp.R
+import com.example.userslistapp.databinding.DialogAddUserBinding
 import com.example.userslistapp.misc.UserCreationValidator
+import com.example.userslistapp.misc.viewLifecycle
 import com.example.userslistapp.models.appmodels.User
-import com.google.android.material.textfield.TextInputLayout
 import org.koin.android.ext.android.inject
 
 class AddUserDialogFragment: DialogFragment() {
@@ -31,12 +31,7 @@ class AddUserDialogFragment: DialogFragment() {
     private val validator: UserCreationValidator by inject()
     private var userToAdd: User? = null
 
-    private lateinit var firstNameEt: EditText
-    private lateinit var lastNameEt: EditText
-    private lateinit var statusMessageEt: EditText
-    private lateinit var firstNameTl: TextInputLayout
-    private lateinit var lastNameTl: TextInputLayout
-    private lateinit var statusMessageTl: TextInputLayout
+    private var binding: DialogAddUserBinding by viewLifecycle()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,14 +41,8 @@ class AddUserDialogFragment: DialogFragment() {
     }
 
 
-    private fun setupViews(view: View) {
-        firstNameEt = view.findViewById(R.id.firstNameEt)
-        lastNameEt = view.findViewById(R.id.lastNameEt)
-        statusMessageEt = view.findViewById(R.id.statusMessageEt)
-        firstNameTl = view.findViewById(R.id.firstNameTl)
-        lastNameTl = view.findViewById(R.id.lastNameTl)
-        statusMessageTl = view.findViewById(R.id.statusMessageTl)
-        firstNameEt.addTextChangedListener(object : TextWatcher {
+    private fun setupWatchers() {
+        binding.firstNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 //do nothing
             }
@@ -63,10 +52,10 @@ class AddUserDialogFragment: DialogFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                firstNameTl.error = null
+                binding.firstNameTl.error = null
             }
         })
-        lastNameEt.addTextChangedListener(object : TextWatcher {
+        binding.lastNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 //do nothing
             }
@@ -76,7 +65,7 @@ class AddUserDialogFragment: DialogFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                lastNameTl.error = null
+                binding.lastNameTl.error = null
             }
         })
     }
@@ -84,12 +73,12 @@ class AddUserDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return requireActivity().let {
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater;
-            val view = inflater.inflate(R.layout.dialog_add_user, null)
-            setupViews(view)
+            val inflater = requireActivity().layoutInflater
+            binding = DataBindingUtil.inflate(inflater, R.layout.dialog_add_user, null, false)
+            setupWatchers()
             builder
                 .setTitle(getString(R.string.add_new_user))
-                .setView(view)
+                .setView(binding.root)
                 .setPositiveButton(getString(R.string.add_user), null)
                 .setNegativeButton(R.string.cancel, null)
             val dialog = builder.create()
@@ -98,9 +87,9 @@ class AddUserDialogFragment: DialogFragment() {
                 val negativeBtn: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 positiveBtn.setOnClickListener {
                     val user = User(
-                        firstNameEt.text.toString(),
-                        lastNameEt.text.toString(),
-                        statusMessageEt.text.toString(),
+                        binding.firstNameEt.text.toString(),
+                        binding.lastNameEt.text.toString(),
+                        binding.statusMessageEt.text.toString(),
                     )
                     when(val status = validator.validate(user)) {
                         is UserCreationValidator.ValidationStatus.Valid -> { userToAdd = status.user; dismiss() }
@@ -127,10 +116,10 @@ class AddUserDialogFragment: DialogFragment() {
 
     private fun showValidationError(status: UserCreationValidator.ValidationStatus.Invalid) {
         if (!status.isFirstNameValid) {
-            firstNameTl.error = "Invalid First Name. Must not be empty."
+            binding.firstNameTl.error = "Invalid First Name. Must not be empty."
         }
         if (!status.isLastNameValid) {
-            lastNameTl.error = "Invalid Last Name. Must not be empty."
+            binding.lastNameTl.error = "Invalid Last Name. Must not be empty."
         }
         if (!status.isStatusMessageValid) {
             // no such case, can be empty
