@@ -17,9 +17,7 @@ import java.lang.Exception
 class UserListViewModelTest {
 
     // region Constants-----------------------------------------------------------------------------
-    companion object {
-        const val ERROR_MESSAGE = "Error Message"
-    }
+
     // endregion Constants--------------------------------------------------------------------------
 
     // region Helper fields-------------------------------------------------------------------------

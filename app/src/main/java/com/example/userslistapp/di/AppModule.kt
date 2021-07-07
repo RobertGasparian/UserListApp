@@ -1,5 +1,7 @@
 package com.example.userslistapp.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.room.Room
 import com.example.userslistapp.database.AppDatabase
 import com.example.userslistapp.misc.UserCreationValidator
@@ -11,6 +13,8 @@ import com.example.userslistapp.models.mappers.*
 import com.example.userslistapp.models.mappers.converters.UserConverter
 import com.example.userslistapp.models.mappers.converters.UserConverterImpl
 import com.example.userslistapp.networking.ApiService
+import com.example.userslistapp.networking.NetworkService
+import com.example.userslistapp.networking.NetworkServiceImpl
 import com.example.userslistapp.networking.RetrofitBuilder
 import com.example.userslistapp.repositories.UserRepo
 import com.example.userslistapp.repositories.UserRepoImpl
@@ -23,6 +27,7 @@ import com.example.userslistapp.viewmodels.UserListViewModelImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -89,6 +94,14 @@ val appModule = module(override = true) {
             .build()
     }
 
+    factory {
+        androidContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    single<NetworkService> {
+        NetworkServiceImpl(get())
+    }
+
     single {
         RetrofitBuilder.getRetrofit(get())
     }
@@ -114,7 +127,7 @@ val appModule = module(override = true) {
     }
 
     factory<UserRepo> {
-        UserRepoImpl(get(), get(), get())
+        UserRepoImpl(get(), get(), get(), get())
     }
 
     single<UserCreationValidator> {

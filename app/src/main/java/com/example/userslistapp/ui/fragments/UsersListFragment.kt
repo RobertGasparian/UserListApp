@@ -14,6 +14,7 @@ import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogActionListener
 import com.example.userslistapp.ui.fragments.dialogs.DeleteDialogFragment
 import com.example.userslistapp.viewmodels.UserListViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UsersListFragment : BaseFragment<UIState, FragmentUsersListBinding>(), UserLongClickListener,
     DeleteDialogActionListener,
@@ -31,7 +32,7 @@ class UsersListFragment : BaseFragment<UIState, FragmentUsersListBinding>(), Use
     override val layoutId: Int
         get() = R.layout.fragment_users_list
 
-    private val viewModel: UserListViewModel by inject()
+    private val viewModel: UserListViewModel by viewModel()
 
     private val adapter = UsersAdapter()
 
