@@ -47,8 +47,6 @@ class UserRepoTest {
         converterSetup()
     }
 
-    //get users
-    //everything fine, first time fetch
     @Test
     fun `when db is empty data fetched from server`() = mainCoroutineScopeRule.runBlockingTest {
         //Arrange
@@ -100,7 +98,6 @@ class UserRepoTest {
             }
         }
 
-    //everything fine, already have data
     @Test
     fun `when db is not empty just return Users`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -120,7 +117,6 @@ class UserRepoTest {
             }
         }
 
-    //first time, no network
     @Test
     fun `when db is empty and no connection throw Exception`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -142,7 +138,6 @@ class UserRepoTest {
             assertTrue(exceptionThrown)
         }
 
-    //first time, server error
     @Test
     fun `when db is empty and fetch failed throw Exception`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -170,8 +165,6 @@ class UserRepoTest {
             assertTrue(exceptionThrown)
         }
 
-    //add user
-    //everything fine
     @Test
     fun `when User add to the server it also added to db`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -188,7 +181,6 @@ class UserRepoTest {
             }
         }
 
-    //no network
     @Test
     fun `when trying to add and no connection, throws Exception`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -208,8 +200,6 @@ class UserRepoTest {
             }
             assertTrue(exceptionThrown)
         }
-
-    //server error
 
     @Test
     fun `when trying to add and server error, throws Exception`() =
@@ -231,7 +221,7 @@ class UserRepoTest {
             }
             assertTrue(exceptionThrown)
         }
-    //db error
+
     @Test
     fun `when added to server but cannot be add to db, throws Exception`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -254,8 +244,6 @@ class UserRepoTest {
             assertTrue(exceptionThrown)
         }
 
-    //delete user
-    //everything fine
     @Test
     fun `when User deleted from the server it also deleted from db`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -271,7 +259,7 @@ class UserRepoTest {
                 userDaoMock.delete(any())
             }
         }
-    //no network
+
     @Test
     fun `when trying to delete and no connection, throws Exception`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -291,7 +279,7 @@ class UserRepoTest {
             }
             assertTrue(exceptionThrown)
         }
-    //server error
+
     @Test
     fun `when trying to delete and server error, throws Exception`() =
         mainCoroutineScopeRule.runBlockingTest {
@@ -312,7 +300,6 @@ class UserRepoTest {
             }
             assertTrue(exceptionThrown)
         }
-    //db error
 
     @Test
     fun `when deleted from server but cannot be deleted to db, throws Exception`() =

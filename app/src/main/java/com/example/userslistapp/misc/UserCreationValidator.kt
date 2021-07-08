@@ -17,8 +17,8 @@ interface UserCreationValidator {
 
 object UserCreationValidatorImpl : UserCreationValidator {
     override fun validate(user: User): UserCreationValidator.ValidationStatus {
-        val isFirstNameValid = user.firstName.isNotEmpty()
-        val isLastNameValid = user.lastName.isNotEmpty()
+        val isFirstNameValid = user.firstName.trim().isNotEmpty()
+        val isLastNameValid = user.lastName.trim().isNotEmpty()
         val isStatusMessageValid = true
         return if (isFirstNameValid && isLastNameValid && isStatusMessageValid) {
             UserCreationValidator.ValidationStatus.Valid(user)

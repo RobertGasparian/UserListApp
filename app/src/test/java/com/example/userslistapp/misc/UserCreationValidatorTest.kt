@@ -15,6 +15,9 @@ class UserCreationValidatorTest {
         const val EMPTY_FIRST_NAME = ""
         const val EMPTY_LAST_NAME = ""
         const val EMPTY_STATUS_MESSAGE = ""
+        const val WS_FIRST_NAME = "    "
+        const val WS_LAST_NAME = "    "
+        const val WS_STATUS_MESSAGE = "    "
     }
     // endregion Constants--------------------------------------------------------------------------
 
@@ -63,6 +66,22 @@ class UserCreationValidatorTest {
     }
 
     @Test
+    fun `when first name is white space only should return Invalid with correct validation points`() {
+        //Arrange
+        val user = CORRECT_USER.copy(firstName = WS_FIRST_NAME)
+        //Act
+        val result = SUT.validate(user)
+        //Assert
+        assertEquals(
+            UserCreationValidator.ValidationStatus.Invalid(
+                isFirstNameValid = false,
+                isLastNameValid = true,
+                isStatusMessageValid = true
+            ), result
+        )
+    }
+
+    @Test
     fun `when last name is empty should return Invalid with correct validation points`() {
         //Arrange
         val user = CORRECT_USER.copy(lastName = EMPTY_LAST_NAME)
@@ -79,9 +98,41 @@ class UserCreationValidatorTest {
     }
 
     @Test
+    fun `when last name is white space only should return Invalid with correct validation points`() {
+        //Arrange
+        val user = CORRECT_USER.copy(lastName = WS_LAST_NAME)
+        //Act
+        val result = SUT.validate(user)
+        //Assert
+        assertEquals(
+            UserCreationValidator.ValidationStatus.Invalid(
+                isFirstNameValid = true,
+                isLastNameValid = false,
+                isStatusMessageValid = true
+            ), result
+        )
+    }
+
+    @Test
     fun `when both and last names are empty should return Invalid with correct validation points`() {
         //Arrange
         val user = CORRECT_USER.copy(firstName = EMPTY_FIRST_NAME, lastName = EMPTY_LAST_NAME)
+        //Act
+        val result = SUT.validate(user)
+        //Assert
+        assertEquals(
+            UserCreationValidator.ValidationStatus.Invalid(
+                isFirstNameValid = false,
+                isLastNameValid = false,
+                isStatusMessageValid = true
+            ), result
+        )
+    }
+
+    @Test
+    fun `when both and last names are white spaces only should return Invalid with correct validation points`() {
+        //Arrange
+        val user = CORRECT_USER.copy(firstName = WS_FIRST_NAME, lastName = WS_LAST_NAME)
         //Act
         val result = SUT.validate(user)
         //Assert
