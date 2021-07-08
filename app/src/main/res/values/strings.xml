@@ -10,4 +10,6 @@
     <string name="first_name">First Name</string>
     <string name="add_user">Add User</string>
     <string name="add_new_user">Add New User</string>
+    <string name="first_name_not_valid_error_msg">Invalid First Name. Must not be empty.</string>
+    <string name="last_name_not_valid_error_msg">Invalid Last Name. Must not be empty.</string>
 </resources>

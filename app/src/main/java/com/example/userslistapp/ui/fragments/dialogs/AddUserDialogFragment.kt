@@ -12,12 +12,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.userslistapp.R
 import com.example.userslistapp.databinding.DialogAddUserBinding
-import com.example.userslistapp.misc.UserCreationValidator
 import com.example.userslistapp.misc.viewLifecycle
 import com.example.userslistapp.models.appmodels.User
-import org.koin.android.ext.android.inject
+import com.example.userslistapp.viewmodels.AddUserVIewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AddUserDialogFragment: DialogFragment() {
+
+class AddUserDialogFragment : DialogFragment() {
 
     companion object {
         fun newInstance() = AddUserDialogFragment().apply {
@@ -28,8 +29,9 @@ class AddUserDialogFragment: DialogFragment() {
     }
 
     private var actionListener: AddUserDialogActionListener? = null
-    private val validator: UserCreationValidator by inject()
     private var userToAdd: User? = null
+
+    private val viewModel: AddUserVIewModel by viewModel()
 
     private var binding: DialogAddUserBinding by viewLifecycle()
 
@@ -52,7 +54,7 @@ class AddUserDialogFragment: DialogFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                binding.firstNameTl.error = null
+                viewModel.firstNameChanged(s.toString())
             }
         })
         binding.lastNameEt.addTextChangedListener(object : TextWatcher {
@@ -65,9 +67,43 @@ class AddUserDialogFragment: DialogFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                binding.lastNameTl.error = null
+                viewModel.lastNameChanged(s.toString())
             }
         })
+    }
+
+    private fun render(uiState: UIState) {
+        when (uiState) {
+            is UIState.InvalidData -> onInvalidData(
+                uiState.isFirstNameValid,
+                uiState.isLastNameValid
+            )
+            is UIState.ValidData -> onValidData(uiState.user)
+            UIState.HideFirstNameError -> onFirstNameErrorHide()
+            UIState.HideLastNameError -> onLastNameErrorHide()
+        }
+    }
+
+    private fun onFirstNameErrorHide() {
+        binding.firstNameTl.error = null
+    }
+
+    private fun onLastNameErrorHide() {
+        binding.lastNameTl.error = null
+    }
+
+    private fun onInvalidData(isFirstNameValid: Boolean, isLastNameValid: Boolean) {
+        if (!isFirstNameValid) {
+            binding.firstNameTl.error = getString(R.string.first_name_not_valid_error_msg)
+        }
+        if (!isLastNameValid) {
+            binding.lastNameTl.error = getString(R.string.last_name_not_valid_error_msg)
+        }
+    }
+
+    private fun onValidData(user: User) {
+        userToAdd = user
+        dismiss()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -76,6 +112,7 @@ class AddUserDialogFragment: DialogFragment() {
             val inflater = requireActivity().layoutInflater
             binding = DataBindingUtil.inflate(inflater, R.layout.dialog_add_user, null, false)
             setupWatchers()
+            observeUiState()
             builder
                 .setTitle(getString(R.string.add_new_user))
                 .setView(binding.root)
@@ -86,17 +123,11 @@ class AddUserDialogFragment: DialogFragment() {
                 val positiveBtn: Button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
                 val negativeBtn: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 positiveBtn.setOnClickListener {
-                    val user = User(
+                    viewModel.tryToAdd(
                         binding.firstNameEt.text.toString(),
                         binding.lastNameEt.text.toString(),
-                        binding.statusMessageEt.text.toString(),
+                        binding.statusMessageEt.text.toString()
                     )
-                    when(val status = validator.validate(user)) {
-                        is UserCreationValidator.ValidationStatus.Valid -> { userToAdd = status.user; dismiss() }
-                        is UserCreationValidator.ValidationStatus.Invalid -> {
-                            showValidationError(status)
-                        }
-                    }
                 }
                 negativeBtn.setOnClickListener {
                     dismiss()
@@ -104,6 +135,14 @@ class AddUserDialogFragment: DialogFragment() {
             }
             dialog
         }
+    }
+
+    private fun observeUiState() {
+        viewModel.uiState().observe(this, {
+            if (it != null) {
+                render(it)
+            }
+        })
     }
 
 
@@ -114,21 +153,20 @@ class AddUserDialogFragment: DialogFragment() {
         super.onDismiss(dialog)
     }
 
-    private fun showValidationError(status: UserCreationValidator.ValidationStatus.Invalid) {
-        if (!status.isFirstNameValid) {
-            binding.firstNameTl.error = "Invalid First Name. Must not be empty."
-        }
-        if (!status.isLastNameValid) {
-            binding.lastNameTl.error = "Invalid Last Name. Must not be empty."
-        }
-        if (!status.isStatusMessageValid) {
-            // no such case, can be empty
-        }
-    }
-
 }
 
 interface AddUserDialogActionListener {
     fun onAdd(user: User)
     fun onAddCancel()
+}
+
+sealed class UIState {
+    data class InvalidData(
+        val isFirstNameValid: Boolean,
+        val isLastNameValid: Boolean,
+    ) : UIState()
+
+    object HideFirstNameError : UIState()
+    object HideLastNameError : UIState()
+    data class ValidData(val user: User) : UIState()
 }

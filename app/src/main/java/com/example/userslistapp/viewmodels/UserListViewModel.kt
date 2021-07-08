@@ -28,8 +28,6 @@ class UserListViewModelImpl(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : UserListViewModel() {
 
-    override fun uiState(): LiveData<UIState> = uiState
-
     override fun getUsers() {
         uiState.value = UIState.Loading
 

@@ -22,6 +22,8 @@ import com.example.userslistapp.ui.activities.MainActivity
 import com.example.userslistapp.ui.navigation.MainActivityNavigator
 import com.example.userslistapp.ui.navigation.Navigator
 import com.example.userslistapp.usecases.*
+import com.example.userslistapp.viewmodels.AddUserVIewModel
+import com.example.userslistapp.viewmodels.AddUserVIewModelImpl
 import com.example.userslistapp.viewmodels.UserListViewModel
 import com.example.userslistapp.viewmodels.UserListViewModelImpl
 import okhttp3.OkHttpClient
@@ -124,6 +126,10 @@ val appModule = module(override = true) {
 
     viewModel<UserListViewModel> {
         UserListViewModelImpl(get(), get(), get())
+    }
+
+    viewModel<AddUserVIewModel> {
+        AddUserVIewModelImpl(get())
     }
 
     factory<UserRepo> {
